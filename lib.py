@@ -23,7 +23,7 @@ class SensorMotor:
         self.ev3 = ev3
         self.left = Motor(Port.A)
         self.right = Motor(Port.D)
-        self.light = ColorSensor(Port.S3)
+        # self.light = ColorSensor(Port.S3)
         self.sonar = UltrasonicSensor(Port.S2)
         self.left_bumper = TouchSensor(Port.S1)
         self.right_bumper = TouchSensor(Port.S4)
@@ -33,7 +33,7 @@ class SensorMotor:
     def values(self):
         return ["L:" + str(self.left.angle()), 
             "R:" + str(self.right.angle()), 
-            "C:" + str(self.light.color()),
+            # "C:" + str(self.light.color()),
             "S:" + str(self.sonar.distance())]
 
     def show(self, action, condition):
@@ -58,12 +58,12 @@ def go_forward(robot):
 def left_buttonPressed(robot):
     if robot.left_bumper.pressed():
         robot.turnedLeftLast = True
-        return
+        return go_left
 
 def right_buttonPressed(robot):
     if robot.right_bumper.pressed():
         robot.turnedLeftLast = False
-        return
+        return go_right
 
 def go_left(robot):
     robot.left.run(-SPEED)

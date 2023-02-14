@@ -8,52 +8,26 @@ ev3 = EV3Brick()
 ev3.screen.clear()
 ev3.screen.draw_text(0, 0, "Avoid2Way")
 
-def check_close(robot):
-    if lib.too_close(robot):
+def check_contactLeft(robot):
+    if lib.too_close(robot) and robot.turnedLeftLast:
         return lib.go_left, check_clear
+    elif lib.left_buttonPressed(robot) and robot.turnedLeftLast:
+        return lib.left_buttonPressed, check_clear
+    elif lib.right_buttonPressed(robot) and not robot.turnedLeftLast:
+        return lib.right_buttonPressed, check_clear
+
+def check_contactRight(robot):
+    if lib.too_close(robot) and not robot.turnedLeftLast:
+        return lib.go_right, check_clear
+    elif lib.left_buttonPressed(robot) and not robot.turnedLeftLast:
+        return lib.left_buttonPressed, check_clear
+    elif lib.right_buttonPressed(robot) and  robot.turnedLeftLast:
+        return lib.right_buttonPressed, check_clear
 
 def check_clear(robot):
-    if not lib.too_close(robot):
-        return lib.go_forward, check_turn
+    if not lib.too_close(robot) and robot.turnedLeftLast:
+        return lib.go_forward, check_contactLeft
+    elif not lib.too_close(robot) and not robot.turnedLeftLast:
+        return lib.go_forward, check_contactRight
 
-def check_turn(robot):
-    if lib.left_buttonPressed(robot):
-        return lib.go_left, check_close
-    elif lib.right_buttonPressed(robot):
-        return lib.go_right, check_close
-
-
-# left_motor = Motor(Port.A)
-# right_motor = Motor(Port.D)
-# left_bumper = TouchSensor(Port.S1)
-# right_bumper = TouchSensor(Port.S4)
-# ev3sonar = UltrasonicSensor(Port.S2)
-
-# SPEED = 360
-
-# # def leftTurnGoingForward():
-# #     left_motor.run(SPEED)
-# #     right_motor.run(SPEED)
-# #     if ev3sonar.distance() < 150:
-# #         leftTurn()
-
-# # def leftTurn():
-# #     left_motor.run(0)
-# #     right_motor.run(-SPEED)
-
-# # def rightTurnGoingForward():
-# #     left_motor.run(SPEED)
-# #     right_motor.run(SPEED)
-# #     if ev3sonar.distance() < 150:
-# #         rightTurn()
-
-# # def rightTurn():
-# #     left_motor.run(-SPEED)
-# #     right_motor.run(0)
-
-# # while True: 
-# #     leftTurnGoingForward()
-# #     if left_bumper.pressed():
-# #         leftTurnGoingForward()
-# #     elif right_bumper.pressed():
-# #         rightTurnGoingForward()
+lib.executor(lib.SensorMotor(ev3), lib.go_forward, check_contactLeft)
