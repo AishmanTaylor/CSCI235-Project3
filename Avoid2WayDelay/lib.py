@@ -45,15 +45,6 @@ class SensorMotor:
             self.ev3.screen.draw_text(0, y, value)
             y += 16
 
-def patrol(robot):
-    while robot.loops < 20:
-        robot.left.run(SPEED)
-        robot.right.run(SPEED)
-
-def turn_180(robot):
-    while robot.right.angle() < 180:
-        return go_right
-
 def go_forward(robot):
     robot.left.run(SPEED)
     robot.right.run(SPEED)
@@ -73,12 +64,14 @@ def right_buttonPressed(robot):
         return go_right
 
 def go_left(robot):
-    robot.left.run(-SPEED)
-    robot.right.run(SPEED)
+    robot.left.reset_angle(-90)
+    # robot.left.run(-SPEED)
+    # robot.right.run(SPEED)
 
 def go_right(robot):
-    robot.left.run(SPEED)
-    robot.right.run(-SPEED)
+    robot.right.reset_angle(-90)
+    # robot.left.run(SPEED)
+    # robot.right.run(-SPEED)
 
 def go_back(robot):
     robot.left.run(-SPEED)
