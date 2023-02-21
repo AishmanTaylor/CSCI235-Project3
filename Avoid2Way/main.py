@@ -13,20 +13,16 @@ def check_contactLeft(robot):
     if lib.too_close(robot) and robot.turnedLeftLast:
         return lib.go_left, check_clear
     elif lib.left_buttonPressed(robot) and robot.turnedLeftLast:
-        robot.left.reset_angle(BACK_UP_DIST)
         return lib.left_buttonPressed, check_clear
     elif lib.right_buttonPressed(robot) and not robot.turnedLeftLast:
-        robot.right.reset_angle(BACK_UP_DIST)
         return lib.right_buttonPressed, check_clear
 
 def check_contactRight(robot):
     if lib.too_close(robot) and not robot.turnedLeftLast:
         return lib.go_right, check_clear
     elif lib.left_buttonPressed(robot) and not robot.turnedLeftLast:
-        robot.left.reset_angle(BACK_UP_DIST)
         return lib.left_buttonPressed, check_clear
     elif lib.right_buttonPressed(robot) and  robot.turnedLeftLast:
-        robot.right.reset_angle(BACK_UP_DIST)
         return lib.right_buttonPressed, check_clear
 
 def check_clear(robot):
